@@ -1,48 +1,36 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * UC3_RoomInventory
- *
- * Demonstrates centralized room inventory management using HashMap.
- * All room availability is stored in a single data structure.
- *
- * @author Nidhi
- * @version 1.0
+ * Centralized inventory using HashMap
  */
 
-class RoomInventory {
+class Inventory {
 
-    // Centralized inventory storage
-    private HashMap<String, Integer> inventory;
+    private HashMap<String, Integer> roomAvailability;
 
-    // Constructor initializes room availability
-    public RoomInventory() {
-        inventory = new HashMap<>();
+    public Inventory() {
+        roomAvailability = new HashMap<>();
 
-        inventory.put("Single Room", 5);
-        inventory.put("Double Room", 3);
-        inventory.put("Suite Room", 2);
+        roomAvailability.put("Single", 2);
+        roomAvailability.put("Double", 2);
+        roomAvailability.put("Suite", 1);
     }
 
-    // Retrieve availability
     public int getAvailability(String roomType) {
-        return inventory.getOrDefault(roomType, 0);
+        return roomAvailability.getOrDefault(roomType, 0);
     }
 
-    // Update availability
-    public void updateAvailability(String roomType, int newCount) {
-        inventory.put(roomType, newCount);
+    public void decrease(String roomType) {
+        roomAvailability.put(roomType, getAvailability(roomType) - 1);
     }
 
-    // Display entire inventory
-    public void displayInventory() {
+    public void increase(String roomType) {
+        roomAvailability.put(roomType, getAvailability(roomType) + 1);
+    }
 
-        System.out.println("=== Current Room Inventory ===");
-
-        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue() + " available");
-        }
+    public void display() {
+        System.out.println("Inventory: " + roomAvailability);
     }
 }
 
@@ -50,19 +38,8 @@ public class UC3_RoomInventory {
 
     public static void main(String[] args) {
 
-        // Initialize inventory
-        RoomInventory inventory = new RoomInventory();
+        Inventory inventory = new Inventory();
 
-        // Display inventory
-        inventory.displayInventory();
-
-        // Example update
-        System.out.println("\nBooking one Single Room...");
-
-        int current = inventory.getAvailability("Single Room");
-        inventory.updateAvailability("Single Room", current - 1);
-
-        // Display updated inventory
-        inventory.displayInventory();
+        inventory.display();
     }
 }

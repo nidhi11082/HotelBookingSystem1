@@ -1,33 +1,20 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * UC4_RoomSearch
- *
- * Demonstrates read-only room search functionality.
- * Guests can view available room types without modifying system state.
- *
- * @author Nidhi
- * @version 1.0
+ * Read-only search of available rooms
  */
 
-// Simple room model
 class RoomInfo {
 
     private String type;
-    private int beds;
-    private double price;
+    private int price;
 
-    public RoomInfo(String type, int beds, double price) {
+    public RoomInfo(String type, int price) {
         this.type = type;
-        this.beds = beds;
         this.price = price;
     }
 
-    public void displayDetails() {
-        System.out.println("Room Type: " + type);
-        System.out.println("Beds: " + beds);
-        System.out.println("Price: $" + price);
+    public void displayDetails(int availability) {
+        System.out.println(type + " | Price: " + price + " | Available: " + availability);
     }
 
     public String getType() {
@@ -35,65 +22,25 @@ class RoomInfo {
     }
 }
 
-// Inventory class (read-only access)
-class Inventory {
-
-    private HashMap<String, Integer> roomAvailability;
-
-    public Inventory() {
-
-        roomAvailability = new HashMap<>();
-
-        roomAvailability.put("Single Room", 5);
-        roomAvailability.put("Double Room", 3);
-        roomAvailability.put("Suite Room", 0); // unavailable
-    }
-
-    public int getAvailability(String roomType) {
-        return roomAvailability.getOrDefault(roomType, 0);
-    }
-
-    public HashMap<String, Integer> getInventory() {
-        return roomAvailability;
-    }
-}
-
 public class UC4_RoomSearch {
 
     public static void main(String[] args) {
 
-        // Initialize inventory
         Inventory inventory = new Inventory();
 
-        // Room domain objects
-        RoomInfo single = new RoomInfo("Single Room", 1, 100);
-        RoomInfo doubleRoom = new RoomInfo("Double Room", 2, 180);
-        RoomInfo suite = new RoomInfo("Suite Room", 3, 350);
+        RoomInfo r1 = new RoomInfo("Single", 1000);
+        RoomInfo r2 = new RoomInfo("Double", 2000);
+        RoomInfo r3 = new RoomInfo("Suite", 5000);
 
-        System.out.println("=== Available Rooms ===");
+        System.out.println("Available Rooms:");
 
-        // Check availability without modifying state
-        for (Map.Entry<String, Integer> entry : inventory.getInventory().entrySet()) {
+        if (inventory.getAvailability("Single") > 0)
+            r1.displayDetails(inventory.getAvailability("Single"));
 
-            String type = entry.getKey();
-            int available = entry.getValue();
+        if (inventory.getAvailability("Double") > 0)
+            r2.displayDetails(inventory.getAvailability("Double"));
 
-            // Filter unavailable rooms
-            if (available > 0) {
-
-                if (type.equals("Single Room")) {
-                    single.displayDetails();
-                }
-                else if (type.equals("Double Room")) {
-                    doubleRoom.displayDetails();
-                }
-                else if (type.equals("Suite Room")) {
-                    suite.displayDetails();
-                }
-
-                System.out.println("Available Rooms: " + available);
-                System.out.println();
-            }
-        }
+        if (inventory.getAvailability("Suite") > 0)
+            r3.displayDetails(inventory.getAvailability("Suite"));
     }
 }
