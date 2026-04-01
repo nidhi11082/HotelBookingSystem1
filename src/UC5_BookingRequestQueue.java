@@ -1,17 +1,11 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * UC5_BookingRequestQueue
  *
- * Demonstrates how booking requests are collected
- * and stored using a Queue to preserve arrival order.
- *
- * @author Nidhi
- * @version 1.0
+ * Demonstrates booking request handling using Queue (FIFO)
  */
 
-// Reservation object
 class Reservation {
 
     private String guestName;
@@ -22,8 +16,16 @@ class Reservation {
         this.roomType = roomType;
     }
 
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
     public void displayRequest() {
-        System.out.println("Guest: " + guestName + " requested " + roomType);
+        System.out.println("Guest: " + guestName + " | Room Type: " + roomType);
     }
 }
 
@@ -31,21 +33,18 @@ public class UC5_BookingRequestQueue {
 
     public static void main(String[] args) {
 
-        // Queue to store booking requests
         Queue<Reservation> bookingQueue = new LinkedList<>();
 
-        // Guests submit booking requests
-        bookingQueue.add(new Reservation("Alice", "Single Room"));
-        bookingQueue.add(new Reservation("Bob", "Double Room"));
-        bookingQueue.add(new Reservation("Charlie", "Suite Room"));
+        // Add booking requests
+        bookingQueue.add(new Reservation("Aman", "Single"));
+        bookingQueue.add(new Reservation("Riya", "Double"));
+        bookingQueue.add(new Reservation("Rahul", "Suite"));
 
-        System.out.println("=== Booking Requests in Queue ===");
+        System.out.println("Booking Requests in Queue:");
 
-        // Display requests in arrival order
-        for (Reservation request : bookingQueue) {
-            request.displayRequest();
+        while (!bookingQueue.isEmpty()) {
+            Reservation r = bookingQueue.poll();
+            r.displayRequest();
         }
-
-        System.out.println("\nRequests are waiting for processing...");
     }
 }
